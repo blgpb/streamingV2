@@ -79,7 +79,7 @@ int main(int argc, char** argv)
             client_node.sendMsg( &client_param, (uint16_t) sizeof client_param, CLIENT_PARAM);
             vector< uchar > img_buffer;
             if ( camera_node.compress( img_buffer, resize_frame ) ){
-                cout << img_buffer.size() << endl;
+                //cout << img_buffer.size() << endl;
                 client_node.sendMsg( img_buffer.data(), (uint16_t) img_buffer.size(), IMG );
             }
             else{
