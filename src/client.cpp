@@ -66,6 +66,7 @@ int main(int argc, char** argv)
         t0 = high_resolution_clock::now();
         camera_node.read( frame );
         read_frame_time = intervalMs( high_resolution_clock::now(), t0 );
+        cout << read_frame_time << endl;
 
         /* img proccessing */        
         t0 = high_resolution_clock::now();
