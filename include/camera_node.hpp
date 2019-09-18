@@ -37,7 +37,7 @@ class CameraNode{
         bool compress( vector<uchar>& img_buffer, Mat frame );
         void release( void );
     private:
-        vector< int > quality{ CV_IMWRITE_JPEG_QUALITY, 60 };
+        vector< int > quality{ CV_IMWRITE_JPEG_QUALITY, 60};
         double interval;
         bool OPENED;
         VideoCapture cap;

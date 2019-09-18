@@ -49,15 +49,15 @@ int main(int argc, char** argv)
     CameraNode camera_node( camera_config.index, camera_config.width, camera_config.height );
     if ( ! camera_node.isOpened() )
         return -1;
-    double resize_rate = 0.5;
+    double resize_rate = 0.4;
     int resize_w = camera_node.width * resize_rate;
     int resize_h = camera_node.height * resize_rate;
 
-    Video video( resize_w , resize_h, recording_path );
+    Video video( camera_node.width , camera_node.height, recording_path );
     /* start while loop */
     double read_frame_time, img_proc_time, compress_img_time, send_msg_time, write_video_time, total_time;
     high_resolution_clock::time_point t0, start, last_send_msg = high_resolution_clock::now();
-    Mat frame;
+    Mat frame, resize_frame;
     while( true ){
         start = high_resolution_clock::now();
 
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
 
         /* img proccessing */        
         t0 = high_resolution_clock::now();
-        resize( frame, frame, Size( resize_w, resize_h ) );
+        resize( frame, resize_frame, Size( resize_w, resize_h ) );
         img_proc_time = intervalMs( high_resolution_clock::now(), t0 );
 
         /* send msg */
@@ -78,7 +78,7 @@ int main(int argc, char** argv)
             last_send_msg = high_resolution_clock::now();
             client_node.sendMsg( &client_param, (uint16_t) sizeof client_param, CLIENT_PARAM);
             vector< uchar > img_buffer;
-            if ( camera_node.compress( img_buffer, frame ) ){
+            if ( camera_node.compress( img_buffer, resize_frame ) ){
                 cout << img_buffer.size() << endl;
                 client_node.sendMsg( img_buffer.data(), (uint16_t) img_buffer.size(), IMG );
             }
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 
         total_time = intervalMs( high_resolution_clock::now(), start );
 
-        if ( total_time > 50 ){
+        if ( total_time > 30 ){
             cout << "************************************" << endl;
             cout << "total_time: " << total_time << endl;
             cout << "read_frame_time: " << read_frame_time << endl;
