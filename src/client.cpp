@@ -66,7 +66,6 @@ int main(int argc, char** argv)
         t0 = high_resolution_clock::now();
         camera_node.read( frame );
         read_frame_time = intervalMs( high_resolution_clock::now(), t0 );
-        cout << read_frame_time << endl;
 
         /* img proccessing */        
         t0 = high_resolution_clock::now();
@@ -96,7 +95,7 @@ int main(int argc, char** argv)
 
         total_time = intervalMs( high_resolution_clock::now(), start );
 
-        if ( total_time > 30 ){
+        if ( total_time > 35 ){
             cout << "************************************" << endl;
             cout << "total_time: " << total_time << endl;
             cout << "read_frame_time: " << read_frame_time << endl;
