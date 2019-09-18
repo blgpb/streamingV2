@@ -23,8 +23,8 @@ CameraNode::CameraNode( int id, int w, int h ){
     for ( int i = 5; i > 0; i--)
         cap.grab();
     last_grab = high_resolution_clock::now();
-    thread updating_thread( &CameraNode::updating, this );
-    updating_thread.detach();
+    //thread updating_thread( &CameraNode::updating, this );
+    //updating_thread.detach();
     return;
 }
 
