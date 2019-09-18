@@ -7,6 +7,7 @@ CameraNode::CameraNode( int id, int w, int h ){
         cout << "[LOGGING]: fail to open camera" << endl;
         return;
     }
+    cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
     cap.set( CV_CAP_PROP_FRAME_WIDTH, w);
     cap.set( CV_CAP_PROP_FRAME_HEIGHT, h);
     //cap.set( CV_CAP_PROP_BUFFERSIZE, 3);
