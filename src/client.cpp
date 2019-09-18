@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     CameraNode camera_node( camera_config.index, camera_config.width, camera_config.height );
     if ( ! camera_node.isOpened() )
         return -1;
-    double resize_rate = 0.5;
+    double resize_rate = 1;
     int resize_w = camera_node.width * resize_rate;
     int resize_h = camera_node.height * resize_rate;
 
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 
         total_time = intervalMs( high_resolution_clock::now(), start );
 
-        if ( total_time > 25 ){
+        if ( total_time > 30 ){
             cout << "************************************" << endl;
             cout << "total_time: " << total_time << endl;
             cout << "read_frame_time: " << read_frame_time << endl;
