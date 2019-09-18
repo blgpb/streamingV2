@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     int resize_w = camera_node.width * resize_rate;
     int resize_h = camera_node.height * resize_rate;
 
-    Video video( resize_w, resize_h, recording_path );
+    Video video( resize_w , resize_h, recording_path );
     /* start while loop */
     double read_frame_time, img_proc_time, compress_img_time, send_msg_time, write_video_time, total_time;
     high_resolution_clock::time_point t0, start, last_send_msg = high_resolution_clock::now();
@@ -79,6 +79,7 @@ int main(int argc, char** argv)
             client_node.sendMsg( &client_param, (uint16_t) sizeof client_param, CLIENT_PARAM);
             vector< uchar > img_buffer;
             if ( camera_node.compress( img_buffer, frame ) ){
+                cout << img_buffer.size() << endl;
                 client_node.sendMsg( img_buffer.data(), (uint16_t) img_buffer.size(), IMG );
             }
             else{
@@ -94,7 +95,7 @@ int main(int argc, char** argv)
 
         total_time = intervalMs( high_resolution_clock::now(), start );
 
-        if ( total_time > 33 ){
+        if ( total_time > 50 ){
             cout << "************************************" << endl;
             cout << "total_time: " << total_time << endl;
             cout << "read_frame_time: " << read_frame_time << endl;
