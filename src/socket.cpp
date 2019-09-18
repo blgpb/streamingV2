@@ -21,7 +21,9 @@ bool udpClientInit( int& client_fd, const char* host, const int port ){
         return false;
     
     //set to non-blocking
-    if ( fcntl( client_fd, F_SETFL, O_NONBLOCK | O_WRONLY ) < 0 )
+    //if ( fcntl( client_fd, F_SETFL, O_NONBLOCK | O_WRONLY ) < 0 )
+    //    return false;
+    if ( fcntl( client_fd, F_SETFL, O_WRONLY ) < 0 )
         return false;
 
     //set send buffer size
