@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     CameraNode camera_node( camera_config.index, camera_config.width, camera_config.height );
     if ( ! camera_node.isOpened() )
         return -1;
-    double resize_rate = 0.4;
+    double resize_rate = 0.5;
     int resize_w = camera_node.width * resize_rate;
     int resize_h = camera_node.height * resize_rate;
 
