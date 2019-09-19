@@ -71,12 +71,12 @@ void CameraNode::updating( void ){
             break;
         }
         high_resolution_clock::time_point now = high_resolution_clock::now();
-        if ( intervalMs(now, last_grab) > interval ){
+        if ( intervalMs(now, last_grab) > interval * 0.5 ){
             cap.grab();
             last_grab = high_resolution_clock::now();
         }
         cap_mutex.unlock();
-        this_thread::sleep_for(milliseconds( (int) ( interval / 5 ) ) );
+        this_thread::sleep_for(milliseconds( (int) ( interval * 0.5 ) ) );
     }
     return;
 }
