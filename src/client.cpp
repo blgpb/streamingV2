@@ -96,7 +96,7 @@ int main(int argc, char** argv)
 
         total_time = intervalMs( high_resolution_clock::now(), start );
         
-        if ( total_time > 15 ){
+        if ( total_time > 20 ){
             cout << "************************************" << endl;
             cout << "total_time: " << total_time << endl;
             cout << "read_frame_time: " << read_frame_time << endl;
