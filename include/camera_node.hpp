@@ -38,8 +38,10 @@ class CameraNode{
         void release( void );
     private:
         vector< int > quality{ CV_IMWRITE_JPEG_QUALITY, 50};
+        double resize_ratio = 0.5;
         double interval;
         bool OPENED;
+        bool new_frame;
         VideoCapture cap;
         mutex cap_mutex;
         high_resolution_clock::time_point last_grab;

@@ -50,9 +50,6 @@ int main(int argc, char** argv)
     CameraNode camera_node( camera_config.index, camera_config.width, camera_config.height );
     if ( ! camera_node.isOpened() )
         return -1;
-    double resize_rate = 0.5;
-    int resize_w = camera_node.width * resize_rate;
-    int resize_h = camera_node.height * resize_rate;
 
     Video video( camera_node.width , camera_node.height, recording_path );
     /* start while loop */
@@ -70,7 +67,7 @@ int main(int argc, char** argv)
 
         /* img proccessing */        
         t0 = high_resolution_clock::now();
-        resize( frame, resize_frame, Size( resize_w, resize_h ) );
+        //resize( frame, resize_frame, Size( resize_w, resize_h ) );
         img_proc_time = intervalMs( high_resolution_clock::now(), t0 );
 
         /* send msg */
@@ -79,7 +76,7 @@ int main(int argc, char** argv)
             last_send_msg = high_resolution_clock::now();
             client_node.sendMsg( &client_param, (uint16_t) sizeof client_param, CLIENT_PARAM);
             vector< uchar > img_buffer;
-            if ( camera_node.compress( img_buffer, resize_frame ) ){
+            if ( camera_node.compress( img_buffer, frame ) ){
                 //cout << img_buffer.size() << endl;
                 client_node.sendMsg( img_buffer.data(), (uint16_t) img_buffer.size(), IMG );
             }

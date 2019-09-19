@@ -7,11 +7,11 @@ CameraNode::CameraNode( int id, int w, int h ){
         cout << "[LOGGING]: fail to open camera" << endl;
         return;
     }
-    cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
-    //cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('Y', 'U', 'Y', '2'));
+    //cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
+    cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('Y', 'U', 'Y', '2'));
     cap.set( CV_CAP_PROP_FRAME_WIDTH, w);
     cap.set( CV_CAP_PROP_FRAME_HEIGHT, h);
-    cap.set( CV_CAP_PROP_FPS, 60);
+    cap.set( CV_CAP_PROP_FPS, 30);
     //cout << cap.get(CV_CAP_PROP_BUFFERSIZE) << endl;
     width = cap.get( CV_CAP_PROP_FRAME_WIDTH );
     height = cap.get( CV_CAP_PROP_FRAME_HEIGHT);
@@ -23,6 +23,7 @@ CameraNode::CameraNode( int id, int w, int h ){
     OPENED = true;
     for ( int i = 5; i > 0; i--)
         cap.grab();
+    new_frame = true;
     last_grab = high_resolution_clock::now();
     thread updating_thread( &CameraNode::updating, this );
     updating_thread.detach();
@@ -43,9 +44,13 @@ bool CameraNode::read( Mat& frame ){
         cout << "cap closed" << endl;
         return false;
     }
-    //cap.grab();
-    //last_grab = high_resolution_clock::now();
+    if ( intervalMs( high_resolution_clock::now(), last_grab ) > interval * 0.3 || new_frame == false ){
+        cap.grab();
+        new_frame = true;
+        last_grab = high_resolution_clock::now();
+    }
     bool ret = cap.retrieve(frame);
+    new_frame = false;
     cap_mutex.unlock();
     return ret;
 }
@@ -57,8 +62,7 @@ void CameraNode::release( void ){
     return;
 }
 bool CameraNode::compress( vector<uchar>& img_buffer , Mat frame ){
-    //Mat gray_frame;
-    //resize(frame, frame, Size(), 0.5, 0.5 );
+    resize(frame, frame, Size(), resize_ratio, resize_ratio );
     //cvtColor( frame, gray_frame, COLOR_BGR2GRAY );
     return imencode(".jpeg", frame, img_buffer, quality);
 }
@@ -70,13 +74,13 @@ void CameraNode::updating( void ){
             cap_mutex.unlock();
             break;
         }
-        high_resolution_clock::time_point now = high_resolution_clock::now();
-        if ( intervalMs(now, last_grab) > interval * 0.5 ){
+        if ( intervalMs(high_resolution_clock::now(), last_grab) > interval * 0.9 ){
             cap.grab();
+            new_frame = true;
             last_grab = high_resolution_clock::now();
         }
         cap_mutex.unlock();
-        this_thread::sleep_for(milliseconds( (int) ( interval * 0.5 ) ) );
+        this_thread::sleep_for(milliseconds( (int) ( interval ) ) );
     }
     return;
 }
