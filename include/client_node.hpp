@@ -17,7 +17,6 @@ using namespace std;
 using namespace std::chrono;
 
 #define MAX_MSG_CONTENT_LENGTH 0xFFFF
-#define SEND_MSG_FREQ 30
 #define HEAD 0xAA
 #define TAIL 0xDD
 

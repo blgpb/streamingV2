@@ -92,7 +92,7 @@ bool sendAll( int socket, void *buffer, size_t length )
     size_t bytes_sent = 0;
     while (offset < length)
     {
-        bytes_sent = send(socket, ptr + offset, length - offset, MSG_NOSIGNAL );
+        bytes_sent = send(socket, ptr + offset, length - offset, MSG_DONTWAIT );
         if (bytes_sent < 0){
             return false;
         }

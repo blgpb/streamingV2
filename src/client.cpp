@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 
     ClientParam client_param;
     client_param.streaming = config["CLIENT_CONFIG"]["STREAMING"].as<bool>();
+    double streaming_freq = config["CLIENT_CONFIG"]["STREAMING_FREQ"].as<double>();
     client_param.video_recording = config["CLIENT_CONFIG"]["VIDEO_RECORDING"].as<bool>();
     string recording_path = config["CLIENT_CONFIG"]["VIDEO_RECORDING_FILE_PATH"].as<string>();
 
@@ -74,7 +75,7 @@ int main(int argc, char** argv)
 
         /* send msg */
         t0 = high_resolution_clock::now();
-        if ( client_param.streaming && intervalMs( t0, last_send_msg ) > 1000.0 / SEND_MSG_FREQ){
+        if ( client_param.streaming && intervalMs( t0, last_send_msg ) > 1000.0 / streaming_freq){
             last_send_msg = high_resolution_clock::now();
             client_node.sendMsg( &client_param, (uint16_t) sizeof client_param, CLIENT_PARAM);
             vector< uchar > img_buffer;
@@ -94,8 +95,8 @@ int main(int argc, char** argv)
         write_video_time = intervalMs( high_resolution_clock::now(), t0 );
 
         total_time = intervalMs( high_resolution_clock::now(), start );
-
-        if ( total_time > 30 ){
+        
+        if ( total_time > 15 ){
             cout << "************************************" << endl;
             cout << "total_time: " << total_time << endl;
             cout << "read_frame_time: " << read_frame_time << endl;

@@ -42,8 +42,8 @@ bool CameraNode::read( Mat& frame ){
         cout << "cap closed" << endl;
         return false;
     }
-    cap.grab();
-    last_grab = high_resolution_clock::now();
+    //cap.grab();
+    //last_grab = high_resolution_clock::now();
     bool ret = cap.retrieve(frame);
     cap_mutex.unlock();
     return ret;
@@ -75,7 +75,7 @@ void CameraNode::updating( void ){
             last_grab = high_resolution_clock::now();
         }
         cap_mutex.unlock();
-        this_thread::sleep_for(milliseconds( (int) ( interval / 2 ) ) );
+        this_thread::sleep_for(milliseconds( (int) ( interval / 5 ) ) );
     }
     return;
 }
