@@ -7,10 +7,11 @@ CameraNode::CameraNode( int id, int w, int h ){
         cout << "[LOGGING]: fail to open camera" << endl;
         return;
     }
-    cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
+    //cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('M', 'J', 'P', 'G'));
+    cap.set( CV_CAP_PROP_FOURCC, CV_FOURCC('Y', 'U', 'Y', '2'));
     cap.set( CV_CAP_PROP_FRAME_WIDTH, w);
     cap.set( CV_CAP_PROP_FRAME_HEIGHT, h);
-    cap.set( CV_CAP_PROP_FPS, 60);
+    cap.set( CV_CAP_PROP_FPS, 30);
     //cout << cap.get(CV_CAP_PROP_BUFFERSIZE) << endl;
     width = cap.get( CV_CAP_PROP_FRAME_WIDTH );
     height = cap.get( CV_CAP_PROP_FRAME_HEIGHT);
